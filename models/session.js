@@ -2,25 +2,22 @@ const { Model, DataTypes } = require('sequelize')
 
 const { sequelize } = require('../utils/db')
 
-class User extends Model {}
+class Session extends Model {}
 
-User.init({
+Session.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
   },
-  username: {
-    type: DataTypes.STRING,
-    unique: true,
+  userId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
-    validate: {
-      isEmail: true,
-    },
+    references: { model: 'users', key: 'id' },
   },
-  name: {
+  token: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -30,14 +27,10 @@ User.init({
     type: DataTypes.DATE,
     allowNull: false,
   },
-  disabled: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
 }, {
   sequelize,
   underscored: true,
-  modelName: 'user'
+  modelName: 'session'
 })
 
-module.exports = User
+module.exports = Session
